@@ -12,16 +12,21 @@ class User(Base):
     password_hash = Column(String(255))
     created_at = Column(DateTime, default=func.now())
 
+    # Связь с проектами
+    projects = relationship("Project", back_populates="user")
+
 class Project(Base):
     __tablename__ = "projects"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(255))
-    description = Column(Text)
+    description = Column(Text, nullable=True)
     user_id = Column(Integer, ForeignKey("users.id"))
 
-    user = relationship("User")
-    columns = relationship("BoardColumn")
+    # Связь с пользователем
+    user = relationship("User", back_populates="projects")
+    # Связь с колонками
+    columns = relationship("BoardColumn", back_populates="project")
 
 class BoardColumn(Base):
     __tablename__ = "columns"
@@ -30,19 +35,23 @@ class BoardColumn(Base):
     name = Column(String(255))
     project_id = Column(Integer, ForeignKey("projects.id"))
 
-    project = relationship("Project")
-    tasks = relationship("Task")
+    # Связь с проектом
+    project = relationship("Project", back_populates="columns")
+    # Связь с задачами
+    tasks = relationship("Task", back_populates="column")
 
 class Task(Base):
     __tablename__ = "tasks"
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(255))
-    description = Column(Text)
+    description = Column(Text, nullable=True)
     column_id = Column(Integer, ForeignKey("columns.id"))
 
-    column = relationship("BoardColumn")
-    logs = relationship("TaskLog")
+    # Связь с колонкой
+    column = relationship("BoardColumn", back_populates="tasks")
+    # Связь с логами
+    logs = relationship("TaskLog", back_populates="task")
 
 class TaskLog(Base):
     __tablename__ = "task_logs"
@@ -52,4 +61,5 @@ class TaskLog(Base):
     action = Column(Text)
     timestamp = Column(DateTime, default=func.now())
 
-    task = relationship("Task")
+    # Связь с задачей
+    task = relationship("Task", back_populates="logs")

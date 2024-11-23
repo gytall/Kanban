@@ -1,8 +1,11 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from .db import AsyncSessionLocal
-from .crud import create_task, create_task_log, create_board_column, get_tasks_by_column, get_task_logs
-from .schemas import TaskCreate, TaskLogCreate, BoardColumnCreate
+from .crud import (
+    create_task, create_task_log, create_board_column, get_tasks_by_column, 
+    get_task_logs, create_user, create_project
+)
+from .schemas import TaskCreate, TaskLogCreate, BoardColumnCreate, UserCreate, ProjectCreate
 
 router = APIRouter()
 
@@ -35,3 +38,13 @@ async def get_tasks_view(column_id: int, db: AsyncSession = Depends(get_db)):
 @router.get("/tasks/{task_id}/logs")
 async def get_task_logs_view(task_id: int, db: AsyncSession = Depends(get_db)):
     return await get_task_logs(db, task_id)
+
+# Роуты для User
+@router.post("/users/")
+async def create_user_view(user: UserCreate, db: AsyncSession = Depends(get_db)):
+    return await create_user(db, user)
+
+# Роуты для Project
+@router.post("/projects/")
+async def create_project_view(project: ProjectCreate, user_id: int, db: AsyncSession = Depends(get_db)):
+    return await create_project(db, project, user_id)

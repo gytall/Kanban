@@ -2,6 +2,35 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from .models import User, Project, BoardColumn, Task, TaskLog
 from .schemas import UserCreate, ProjectCreate, BoardColumnCreate, TaskCreate, TaskLogCreate
+from passlib.context import CryptContext
+
+# Контекст для хеширования паролей
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+# User CRUD
+async def create_user(db: AsyncSession, user: UserCreate):
+    hashed_password = pwd_context.hash(user.password)  # Хэшируем пароль
+    new_user = User(
+        username=user.username,
+        email=user.email,
+        password_hash=hashed_password
+    )
+    db.add(new_user)
+    await db.commit()
+    await db.refresh(new_user)
+    return new_user
+
+# Project CRUD
+async def create_project(db: AsyncSession, project: ProjectCreate, user_id: int):
+    new_project = Project(
+        name=project.name,
+        description=project.description,
+        user_id=user_id
+    )
+    db.add(new_project)
+    await db.commit()
+    await db.refresh(new_project)
+    return new_project
 
 # Task CRUD
 async def create_task(db: AsyncSession, task: TaskCreate, column_id: int):
@@ -26,7 +55,7 @@ async def create_task_log(db: AsyncSession, log: TaskLogCreate, task_id: int):
     await db.refresh(new_log)
     return new_log
 
-# BoardColumn (Column) CRUD
+# BoardColumn CRUD
 async def create_board_column(db: AsyncSession, column: BoardColumnCreate, project_id: int):
     new_column = BoardColumn(
         name=column.name,

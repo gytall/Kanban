@@ -1,11 +1,11 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 
 # User Schemas
 class UserBase(BaseModel):
     username: str
-    email: str
+    email: EmailStr
 
 class UserCreate(UserBase):
     password: str  # Пароль будет передаваться при создании пользователя
@@ -27,6 +27,7 @@ class ProjectCreate(ProjectBase):
 
 class ProjectOut(ProjectBase):
     id: int
+    user_id: int
 
     class Config:
         orm_mode = True
