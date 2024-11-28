@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from .db import Base
 
+# Модель пользователя
 class User(Base):
     __tablename__ = "users"
 
@@ -15,6 +16,8 @@ class User(Base):
     # Связь с проектами
     projects = relationship("Project", back_populates="user")
 
+
+# Модель проекта
 class Project(Base):
     __tablename__ = "projects"
 
@@ -28,6 +31,8 @@ class Project(Base):
     # Связь с колонками
     columns = relationship("BoardColumn", back_populates="project")
 
+
+# Модель колонки
 class BoardColumn(Base):
     __tablename__ = "columns"
 
@@ -40,6 +45,8 @@ class BoardColumn(Base):
     # Связь с задачами
     tasks = relationship("Task", back_populates="column")
 
+
+# Модель задачи
 class Task(Base):
     __tablename__ = "tasks"
 
@@ -53,6 +60,8 @@ class Task(Base):
     # Связь с логами
     logs = relationship("TaskLog", back_populates="task")
 
+
+# Модель лога задачи
 class TaskLog(Base):
     __tablename__ = "task_logs"
 
