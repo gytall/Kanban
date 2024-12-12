@@ -6,7 +6,7 @@ from .crud import (
     create_user, create_project, get_projects, get_project_by_id,
     update_project, delete_project, create_board_column, get_columns_by_project,
     update_column, delete_column, create_task, get_tasks_by_column,
-    update_task, delete_task, create_task_log, get_task_logs
+    update_task, delete_task, create_task_log, get_task_logs, get_user_by_id, get_all_users
 )
 from .schemas import (
     UserCreate, ProjectCreate, ProjectOut, BoardColumnCreate,
