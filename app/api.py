@@ -94,6 +94,11 @@ async def get_task_logs_view(task_id: int, db: AsyncSession = Depends(get_db)):
 
 # ----------------- PUT запросы -----------------
 
+# User
+# @router.put("/users/{user_id}")
+# async def update_user_view(user_id: int, user: UserCreate, db: AsyncSession = Depends(get_db)):
+#     return await update_user(db, user_id, user)
+
 # Project
 @router.put("/projects/{project_id}")
 async def update_project_view(project_id: int, project: ProjectCreate, db: AsyncSession = Depends(get_db)):

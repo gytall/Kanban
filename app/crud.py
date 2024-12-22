@@ -101,6 +101,21 @@ async def get_column_by_id(db: AsyncSession, column_id: int):
     result = await db.execute(select(BoardColumn).where(BoardColumn.id == column_id))
     return result.scalars().first()
 
+# async def get_user_by_id_put(db: AsyncSession, user_id: int):
+#     result = await db.execute(select(User).where(User.id == user_id))
+#     return result.scalars().first()
+
+# async def update_user(db: AsyncSession, user_id: int, user: UserCreate):
+#     existing_user = await get_user_by_id_put(db, user_id)
+#     if existing_user:
+#         existing_user.username = user.username
+              
+#         db.add(existing_user)
+#         await db.commit()
+#         await db.refresh(existing_user)
+#         return existing_user
+#     return None
+
 async def update_column(db: AsyncSession, column_id: int, column: BoardColumnCreate):
     existing_column = await get_column_by_id(db, column_id)
     if existing_column:
@@ -135,10 +150,14 @@ async def get_tasks_by_column(db: AsyncSession, column_id: int):
     result = await db.execute(select(Task).where(Task.column_id == column_id))
     return result.scalars().all()
 
+async def get_task_by_id(db: AsyncSession, task_id: int):
+    result = await db.execute(select(Task).where(Task.id == task_id))
+    return result.scalars().first()
+
 async def update_task(db: AsyncSession, task_id: int, task: TaskCreate):
     existing_task = await get_task_by_id(db, task_id)
     if existing_task:
-        existing_task.title = task.title
+        existing_task.title = task.title 
         existing_task.description = task.description
         db.add(existing_task)
         await db.commit()
