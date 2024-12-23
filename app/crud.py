@@ -1,9 +1,10 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy import delete
 from passlib.context import CryptContext
 
-from .models import User, Project, BoardColumn, Task, TaskLog
-from .schemas import (
+from app.models import User, Project, BoardColumn, Task, TaskLog
+from app.schemas import (
     UserCreate, ProjectCreate, BoardColumnCreate, TaskCreate, TaskLogCreate
 )
 
@@ -13,7 +14,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # User CRUD
 async def create_user(db: AsyncSession, user: UserCreate):
-    hashed_password = pwd_context.hash(user.password)  # Хэшируем пароль
+    hashed_password = pwd_context.hash(user.password) 
     new_user = User(
         username=user.username,
         email=user.email,
@@ -77,9 +78,8 @@ async def update_project(db: AsyncSession, project_id: int, project: ProjectCrea
 async def delete_project(db: AsyncSession, project_id: int):
     project = await get_project_by_id(db, project_id)
     if project:
-        await db.delete(project)
+        await db.execute(delete(Project).where(Project.id == project_id))
         await db.commit()
-        return project
     return None
 
 # BoardColumn CRUD

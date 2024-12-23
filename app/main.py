@@ -1,16 +1,18 @@
 from fastapi import FastAPI
 from .db import engine, Base
-from .api import router
-
+from .api import projects_router, user_router, tasks_router, column_router, logs_router
 app = FastAPI()
 
 # Подключение маршрутов
-app.include_router(router)
+app.include_router(projects_router)
+app.include_router(user_router)
+app.include_router(tasks_router)
+app.include_router(column_router)
+app.include_router(logs_router)
 
-# Миграция таблиц при старте приложения
 @app.on_event("startup")
 async def startup():
-    # Создаем таблицы в базе данных, если их нет
+    
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
