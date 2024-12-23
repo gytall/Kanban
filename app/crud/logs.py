@@ -4,11 +4,7 @@ from sqlalchemy import delete
 from passlib.context import CryptContext
 
 from app.models import TaskLog
-from app.schemas import (
-  TaskLogCreate
-)
-
-
+from app.schemas import TaskLogCreate
 
 async def create_task_log(db: AsyncSession, log: TaskLogCreate, task_id: int):
     new_log = TaskLog(

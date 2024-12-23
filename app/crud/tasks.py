@@ -3,9 +3,7 @@ from sqlalchemy.future import select
 from sqlalchemy import delete
 
 from app.models import Task
-from app.schemas import (
-    TaskCreate
-)
+from app.schemas import TaskCreate
 
 async def create_task(db: AsyncSession, task: TaskCreate, column_id: int):
     new_task = Task(

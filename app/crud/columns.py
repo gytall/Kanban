@@ -4,9 +4,7 @@ from sqlalchemy import delete
 from passlib.context import CryptContext
 
 from app.models import BoardColumn
-from app.schemas import (
-  BoardColumnCreate
-)
+from app.schemas import BoardColumnCreate
 
 async def create_board_column(db: AsyncSession, column: BoardColumnCreate, project_id: int):
     new_column = BoardColumn(

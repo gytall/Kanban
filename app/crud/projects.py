@@ -3,13 +3,8 @@ from sqlalchemy.future import select
 from sqlalchemy import delete
 
 from app.models import Project
-from app.schemas import (
-    ProjectCreate,
-)
+from app.schemas import ProjectCreate
 
-
-
-# Project CRUD
 async def create_project(db: AsyncSession, project: ProjectCreate, user_id: int):
     new_project = Project(
         name=project.name,

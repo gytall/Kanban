@@ -4,13 +4,9 @@ from sqlalchemy import delete
 from passlib.context import CryptContext
 
 from app.models import User
-from app.schemas import (
-    UserCreate
-)
+from app.schemas import UserCreate
 
-# Контекст для хеширования паролей
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 
 async def create_user(db: AsyncSession, user: UserCreate):
     hashed_password = pwd_context.hash(user.password) 
