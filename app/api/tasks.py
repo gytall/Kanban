@@ -6,6 +6,7 @@ from app.crud import (
 		get_tasks_by_column,
 		update_task,
 		delete_task,
+    get_task_by_id,
 )
 router = APIRouter(
 	prefix="/tasks",
@@ -19,6 +20,10 @@ async def update_task_view(task_id: int, task: TaskCreate, db: AsyncSession = De
 @router.post("/")
 async def create_task_view(task: TaskCreate, column_id: int, db: AsyncSession = Depends(get_db)):
   return await create_task(db, task, column_id)
+
+@router.get("/{task_id}")
+async def get_tasks_view(column_id: int, db: AsyncSession = Depends(get_db)):
+  return await get_task_by_id(db, column_id)
 
 @router.get("/{column_id}/tasks")
 async def get_tasks_view(column_id: int, db: AsyncSession = Depends(get_db)):
