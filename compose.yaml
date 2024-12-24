@@ -1,0 +1,20 @@
+services:
+  kanban_app:
+    container_name: kanban_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ['uvicorn', 'app.main:app', '--reload']
+    depends_on:
+      - kanban_db
+
+  kanban_db:
+    image: postgres:12.18-alpine
+    container_name: kanban_db
+    ports:
+      - 8000:8001
+    volumes:
+      - kanban_db_data:/var/lib/postgresql/data
+
+volumes:
+  kanban_db_data:
