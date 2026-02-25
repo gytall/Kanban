@@ -1,0 +1,28 @@
+services:
+  kanban_app:
+    container_name: kanban_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ['uvicorn', 'app.main:app', '--host', '0.0.0.0', '--port', '8000', '--reload']
+    ports:
+      - "8000:8000"
+    depends_on:
+      - kanban_db
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@kanban_db:5432/kanban_db
+
+  kanban_db:
+    image: postgres:12.18-alpine
+    container_name: kanban_db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=kanban_db
+    volumes:
+      - kanban_db_data:/var/lib/postgresql/data
+
+volumes:
+  kanban_db_data:
